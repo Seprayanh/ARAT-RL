@@ -19,7 +19,19 @@ brew install wget curl git vim tmux
 
 # Install Java 8 and 11
 echo "Installing Java 8 and 11..."
-brew install openjdk@8 openjdk@11
+brew install openjdk@11
+
+# Check architecture and handle Java 8 installation
+ARCH=$(uname -m)
+if [[ "$ARCH" == "arm64" ]]; then
+    echo "ARM64 architecture detected. Java 8 is not available via Homebrew on ARM64."
+    echo "You may need to install Java 8 manually or use a different approach."
+    echo "For now, we'll proceed with Java 11 and update the environment files accordingly."
+    JAVA8_AVAILABLE=false
+else
+    brew install openjdk@8
+    JAVA8_AVAILABLE=true
+fi
 
 # Install Maven
 echo "Installing Maven..."
