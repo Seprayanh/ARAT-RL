@@ -689,8 +689,10 @@ def main():
     time_limit = int(sys.argv[3])
     iteration = 0
     max_iterations_without_improvement = 10
-
+    print(f"Starting loop, time_limit={time_limit}", flush=True)
+    
     while True:
+        print(f"Iteration {iteration}", flush=True)
         elapsed_time = time.time() - start_time
         if elapsed_time >= time_limit:
             break
