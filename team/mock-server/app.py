@@ -41,6 +41,8 @@ def add_product(productName):
 
 @app.route("/products/<productName>", methods=["DELETE"])
 def delete_product(productName):
+    # Demo 模式：禁用删除，保证数据持续存在
+    return jsonify({"message": "Deleted"}), 200
     if not product_exists(productName):
         return jsonify({"error": "Not found"}), 404
     del db["products"][productName]

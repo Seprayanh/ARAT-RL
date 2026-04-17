@@ -692,13 +692,12 @@ def main():
     print(f"Starting loop, time_limit={time_limit}", flush=True)
     
     while True:
-        print(f"Iteration {iteration}", flush=True)
         elapsed_time = time.time() - start_time
         if elapsed_time >= time_limit:
             break
         parameter_values = generate_parameter_values(operations)
-        selected_operation, selected_parameters = select_operations_and_parameters(operations, parameter_values,
-                                                                                   q_table)
+        selected_operation, selected_parameters = select_operations_and_parameters(operations, parameter_values, q_table)
+        print(f"\n[Iter {iteration:03d}] OP: {selected_operation['method'].upper()} {selected_operation['path']}", flush=True)                                                                           
 
         # Run all producer operations if the selected_operation is a consumer operation
         if selected_operation['operation_id'] in consumer:
@@ -710,6 +709,13 @@ def main():
                             producer_operation_id]
 
                         response, path, query_params, body_params = execute_operations(base_url, producer_operation, producer_parameters)
+                        
+                        # ── Demo 输出 ──
+                        status = response.status_code
+                        mark = "✓" if 200 <= status < 300 else ("💥 500!" if status == 500 else "✗")
+                        print(f"         → {status} {mark}  |  path: {path}", flush=True)
+        # ──────────────
+                        
                         if (selected_operation['method'] in ["post", "get"]) and 200 <= response.status_code < 300:
                             try:
                                 extract_response_values(response.json(), producer_operation)
@@ -717,6 +723,9 @@ def main():
                                 pass
 
         response, path, query_params, body_params = execute_operations(base_url, selected_operation, selected_parameters)
+        status = response.status_code
+        mark = "✓" if 200 <= status < 300 else ("💥 500!" if status == 500 else "✗")
+        print(f"         → {status} {mark}  |  path: {path}", flush=True)
         if (selected_operation['method'] in ["post", "get"]) and 200 <= response.status_code < 300:
             try:
                 extract_response_values(response.json(), selected_operation)
