@@ -27,4 +27,8 @@ workloadResultsFile.xlsx
 faultloadResultsFile.xlsx
 org.jacoco.*
 jacoco_*
-*LOG_PATH*
+*LOG_PATH*# Team workspace
+*.log
+__pycache__/
+.DS_Store
+team/results/raw/*.json
